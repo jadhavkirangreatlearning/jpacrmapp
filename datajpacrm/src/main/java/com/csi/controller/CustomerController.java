@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,5 +59,13 @@ public class CustomerController {
     public ResponseEntity<String> deleteById(@PathVariable long custId) {
         customerServiceImpl.deleteById(custId);
         return ResponseEntity.ok("Data Deleted Successfully");
+    }
+
+    @GetMapping("/findbydob/{custDOB}")
+    public ResponseEntity<List<Customer>> findByDOB(@PathVariable String custDOB) {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        return ResponseEntity.ok(customerServiceImpl.findAll().stream().filter(cust -> simpleDateFormat.format(cust.getCustDOB()).equals(custDOB)).toList());
+
     }
 }
