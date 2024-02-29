@@ -61,11 +61,8 @@ public class CustomerController {
         return ResponseEntity.ok("Data Deleted Successfully");
     }
 
-    @GetMapping("/findbydob/{custDOB}")
-    public ResponseEntity<List<Customer>> findByDOB(@PathVariable String custDOB) {
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        return ResponseEntity.ok(customerServiceImpl.findAll().stream().filter(cust -> simpleDateFormat.format(cust.getCustDOB()).equals(custDOB)).toList());
-
+    @GetMapping("/findbycontactnumber/custContactNumber}")
+    public ResponseEntity<Customer> findByContactNumber(@PathVariable long custContactNumber) {
+        return ResponseEntity.ok(customerServiceImpl.findAll().stream().filter(cust -> cust.getcustContactNumber() == custContactNumber).toList().get(0));
     }
 }
