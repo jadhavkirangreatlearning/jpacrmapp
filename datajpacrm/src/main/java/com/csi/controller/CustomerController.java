@@ -63,6 +63,6 @@ public class CustomerController {
 
     @GetMapping("/findbycontactnumber/custContactNumber}")
     public ResponseEntity<Customer> findByContactNumber(@PathVariable long custContactNumber) {
-        return ResponseEntity.ok(customerServiceImpl.findAll().stream().filter(cust -> cust.getcustContactNumber() == custContactNumber).toList().get(0));
+        return ResponseEntity.ok(customerServiceImpl.findAll().stream().filter(cust -> cust.getCustContactNumber() == custContactNumber).toList().get(0));
     }
 }
