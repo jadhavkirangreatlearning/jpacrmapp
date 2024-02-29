@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,11 @@ public class CustomerController {
     @GetMapping("/signin/{custEmailId}/{custPassword}")
     public ResponseEntity<Boolean> signIn(@PathVariable String custEmailId, @PathVariable String custPassword) {
         return ResponseEntity.ok(customerServiceImpl.signIn(custEmailId, custPassword));
+    }
+
+    @GetMapping("/sortbyaccountbalance")
+    public ResponseEntity<List<Customer>> sortByAccountBalance() {
+        return ResponseEntity.ok(customerServiceImpl.findAll().stream().sorted(Comparator.comparingDouble(Customer::getCustAccountBalance).reversed()).toList());
     }
 
     @GetMapping("/findbyid/{custId}")
