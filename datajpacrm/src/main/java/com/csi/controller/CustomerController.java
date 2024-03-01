@@ -70,4 +70,16 @@ public class CustomerController {
         customerServiceImpl.deleteById(custId);
         return ResponseEntity.ok("Data Deleted Successfully");
     }
+
+    @GetMapping("/sortByname")
+    public  ResponseEntity<List<Customer>> sortByName(){
+      return ResponseEntity.ok(  customerServiceImpl.findAll().stream().sorted(Comparator.comparing(Customer::getCustName)).toList());
+    }
+
+    @GetMapping("/services")
+    public ResponseEntity<String> softServices(){
+        return ResponseEntity.ok("Software Development Services");
+    }
+
+
 }
