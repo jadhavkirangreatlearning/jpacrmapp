@@ -3,6 +3,7 @@ package com.csi.controller;
 import com.csi.exception.RecordNotFoundException;
 import com.csi.model.Customer;
 import com.csi.service.CustomerServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class CustomerController {
 
     @Autowired
@@ -27,6 +29,8 @@ public class CustomerController {
 
     @GetMapping("/signin/{custEmailId}/{custPassword}")
     public ResponseEntity<Boolean> signIn(@PathVariable String custEmailId, @PathVariable String custPassword) {
+
+       log.info("inside sign in method");
         return ResponseEntity.ok(customerServiceImpl.signIn(custEmailId, custPassword));
     }
 
