@@ -32,6 +32,8 @@ public class CustomerController {
     public ResponseEntity<String> signIn(@PathVariable String custEmailId, @PathVariable String custPassword) {
         String msg = "";
 
+        log.info("inside sign in method");
+
         if (customerServiceImpl.signIn(custEmailId, custPassword)) {
             msg = "SignIn Successfully";
         } else {
