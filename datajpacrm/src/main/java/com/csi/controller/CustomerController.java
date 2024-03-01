@@ -71,4 +71,10 @@ public class CustomerController {
       return ResponseEntity.ok(  customerServiceImpl.findAll().stream().sorted(Comparator.comparing(Customer::getCustName)).toList());
     }
 
+    @GetMapping("/services")
+    public ResponseEntity<String> softServices(){
+        return ResponseEntity.ok("Software Development Services");
+    }
+
+
 }
