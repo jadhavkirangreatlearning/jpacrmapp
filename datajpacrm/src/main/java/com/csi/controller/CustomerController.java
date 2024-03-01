@@ -35,6 +35,11 @@ public class CustomerController {
         return ResponseEntity.ok(customerServiceImpl.findAll().stream().sorted(Comparator.comparingDouble(Customer::getCustAccountBalance).reversed()).toList());
     }
 
+    @GetMapping("/say")
+    public ResponseEntity<String> sayHello() {
+        return ResponseEntity.ok("Say Hello");
+    }
+
     @GetMapping("/findbyid/{custId}")
     public ResponseEntity<Optional<Customer>> findById(@PathVariable long custId) {
         return ResponseEntity.ok(customerServiceImpl.findById(custId));
