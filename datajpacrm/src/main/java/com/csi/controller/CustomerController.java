@@ -24,20 +24,33 @@ public class CustomerController {
 
     @PostMapping("/save")
     public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer) {
+        log.info("Trying to SignUp" + customer.getCustName());
         return new ResponseEntity<>(customerServiceImpl.save(customer), HttpStatus.CREATED);
     }
 
     @GetMapping("/signin/{custEmailId}/{custPassword}")
-    public ResponseEntity<Boolean> signIn(@PathVariable String custEmailId, @PathVariable String custPassword) {
+    public ResponseEntity<String> signIn(@PathVariable String custEmailId, @PathVariable String custPassword) {
+        String msg = "";
 
-       log.info("inside sign in method");
-        return ResponseEntity.ok(customerServiceImpl.signIn(custEmailId, custPassword));
+        if (customerServiceImpl.signIn(custEmailId, custPassword)) {
+            msg = "SignIn Successfully";
+        } else {
+            msg = "Invalid Credentials Please Try Again!!!!";
+        }
+
+        return ResponseEntity.ok(msg);
     }
 
     @GetMapping("/sortbyaccountbalance")
     public ResponseEntity<List<Customer>> sortByAccountBalance() {
         return ResponseEntity.ok(customerServiceImpl.findAll().stream().sorted(Comparator.comparingDouble(Customer::getCustAccountBalance).reversed()).toList());
     }
+
+    @GetMapping("/say")
+    public ResponseEntity<String> sayHello() {
+        return ResponseEntity.ok("Say Hello");
+    }
+
 
     @GetMapping("/findbyid/{custId}")
     public ResponseEntity<Optional<Customer>> findById(@PathVariable long custId) {
@@ -71,12 +84,12 @@ public class CustomerController {
     }
 
     @GetMapping("/sortByname")
-    public  ResponseEntity<List<Customer>> sortByName(){
-      return ResponseEntity.ok(  customerServiceImpl.findAll().stream().sorted(Comparator.comparing(Customer::getCustName)).toList());
+    public ResponseEntity<List<Customer>> sortByName() {
+        return ResponseEntity.ok(customerServiceImpl.findAll().stream().sorted(Comparator.comparing(Customer::getCustName)).toList());
     }
 
     @GetMapping("/services")
-    public ResponseEntity<String> softServices(){
+    public ResponseEntity<String> softServices() {
         return ResponseEntity.ok("Software Development Services");
     }
 
