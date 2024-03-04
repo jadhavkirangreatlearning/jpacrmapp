@@ -3,18 +3,20 @@ package com.csi.controller;
 import com.csi.exception.RecordNotFoundException;
 import com.csi.model.Customer;
 import com.csi.service.CustomerServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class CustomerController {
 
     @Autowired
@@ -22,13 +24,35 @@ public class CustomerController {
 
     @PostMapping("/save")
     public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer) {
+        log.info("Trying to SignUp" + customer.getCustName());
         return new ResponseEntity<>(customerServiceImpl.save(customer), HttpStatus.CREATED);
     }
 
     @GetMapping("/signin/{custEmailId}/{custPassword}")
-    public ResponseEntity<Boolean> signIn(@PathVariable String custEmailId, @PathVariable String custPassword) {
-        return ResponseEntity.ok(customerServiceImpl.signIn(custEmailId, custPassword));
+    public ResponseEntity<String> signIn(@PathVariable String custEmailId, @PathVariable String custPassword) {
+        String msg = "";
+
+        log.info("inside sign in method");
+
+        if (customerServiceImpl.signIn(custEmailId, custPassword)) {
+            msg = "SignIn Successfully";
+        } else {
+            msg = "Invalid Credentials Please Try Again!!!!";
+        }
+
+        return ResponseEntity.ok(msg);
     }
+
+    @GetMapping("/sortbyaccountbalance")
+    public ResponseEntity<List<Customer>> sortByAccountBalance() {
+        return ResponseEntity.ok(customerServiceImpl.findAll().stream().sorted(Comparator.comparingDouble(Customer::getCustAccountBalance).reversed()).toList());
+    }
+
+    @GetMapping("/say")
+    public ResponseEntity<String> sayHello() {
+        return ResponseEntity.ok("Say Hello");
+    }
+
 
     @GetMapping("/findbyid/{custId}")
     public ResponseEntity<Optional<Customer>> findById(@PathVariable long custId) {
@@ -61,14 +85,20 @@ public class CustomerController {
         return ResponseEntity.ok("Data Deleted Successfully");
     }
 
-   @GetMapping("/findbycontactnumber/{custContactNumber}")
-    public ResponseEntity<Customer> findByContactNumber(@PathVariable long custContactNumber) {
-        return ResponseEntity.ok(customerServiceImpl.findAll().stream().filter(cust -> cust.getCustContactNumber() == custContactNumber).toList().get(0));
+    @GetMapping("/sortByname")
+    public ResponseEntity<List<Customer>> sortByName() {
+        return ResponseEntity.ok(customerServiceImpl.findAll().stream().sorted(Comparator.comparing(Customer::getCustName)).toList());
     }
 
     @GetMapping("/services")
-    public ResponseEntity<String>services(){
-        return ResponseEntity.ok("servises");
+    public ResponseEntity<String> softServices() {
+        return ResponseEntity.ok("Software Development Services");
     }
+
+    @GetMapping("/ptoduct")
+    public ResponseEntity<String> product() {
+        return ResponseEntity.ok("Software product");
+    }
+
 
 }
