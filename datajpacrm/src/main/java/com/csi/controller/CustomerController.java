@@ -61,8 +61,14 @@ public class CustomerController {
         return ResponseEntity.ok("Data Deleted Successfully");
     }
 
-    @GetMapping("/findbycontactnumber/custContactNumber}")
+   @GetMapping("/findbycontactnumber/{custContactNumber}")
     public ResponseEntity<Customer> findByContactNumber(@PathVariable long custContactNumber) {
         return ResponseEntity.ok(customerServiceImpl.findAll().stream().filter(cust -> cust.getCustContactNumber() == custContactNumber).toList().get(0));
     }
+
+    @GetMapping("/services")
+    public ResponseEntity<String>services(){
+        return ResponseEntity.ok("servises");
+    }
+
 }
