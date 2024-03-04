@@ -99,6 +99,9 @@ public class CustomerController {
     public ResponseEntity<String> product() {
         return ResponseEntity.ok("Software product");
     }
-
+    @GetMapping("/welcome")
+    public ResponseEntity<String> welcome() {
+        return ResponseEntity.ok("welcome");
+    }
 
 }
